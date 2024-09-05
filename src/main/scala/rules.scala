@@ -233,44 +233,28 @@ object BackwardChaining:
   }
 
 import scala.sys.process.*
-def plot(title: String)(body: (String => Unit) ?=> Unit)  =
+def plot(title: String)(body: (String => Unit) ?=> Unit): Process =
   // only works when forking process
-//  Process("dot -Tpng").!!
-  import java.io.PrintWriter
-  new PrintWriter(s"$title.dot") {
-    write("digraph G {")
-    write(s"label = \"$title\"")
-    body(using write)
-    write("}")
-
+  new java.io.PrintWriter(s"plots/$title.dot") {
+    write("digraph G {\n")
+    write(s"label = \"$title\"\n")
+    body(using x => write(x + "\n"))
+    write("}\n")
     close()
   }
-//  f.close()
-//  ps.close()
-//  System.setOut(co)
-
-//  Process("dot -Tpng").run(ProcessIO(i => {
-//    System.setOut(new java.io.PrintStream(i))
-//    println("digraph G {")
-//    println(s"label = \"$title\"")
-//    body
-//    println("}")
-//    i.close()
-//    System.setOut(co)
-//  }, e => new FileOutputStream(new File(s"$title.png")).write(e.readAllBytes()), e => co.println(String(e.readAllBytes()))  )).exitValue()
-//  co.println("finalized")
+  Process(s"dot -Tpng plots/$title.dot -o plots/$title.png").run()
 
 
 @main def m =
   // Yeey!
   // BuchiReduction.removeSubsumed(BuchiReduction(BuchiReduction.example_graph)).plot()
 
-  BackwardChaining.isFrog.plot()
+//  BackwardChaining.isFrog.plot()
 //  plot("mark facts") { BackwardChaining.markFacts.plot() }
 //  plot("backtrackAnd") { BackwardChaining.backtrackAnd.plot() }
-//  plot("original") {
-//    BackwardChaining.example_graph.plot()
-//  }
+  plot("original") {
+    BackwardChaining.example_graph.plot
+  }
 //  for case (g, i) <- BackwardChaining.markFacts.applyIt(BackwardChaining.example_graph).zipWithIndex do
 //    println(i)
 //    plot(s"markFacts $i") {
