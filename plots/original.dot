@@ -1,16 +1,27 @@
 digraph G {
 label = "original"
-g6n3 [label="" shape=circle width=0.25]
-g6n2 [label="" shape=circle width=0.25]
-g6n0 [label="" shape=circle width=0.25]
-g6n1 [label="" shape=circle width=0.25]
-g6n4 [label="" shape=circle width=0.25]
-g6n3 -> g6n3 [label="eats flies"];
-g6n2 -> g6n2 [label="green"];
-g6n0 -> g6n0 [label="goal"];
-g6n0 -> g6n2 [label="is"];
-g6n1 -> g6n1 [label="fact"];
-g6n1 -> g6n3 [label="holds"];
-g6n1 -> g6n4 [label="holds"];
-g6n4 -> g6n4 [label="croaks"];
+g21n1 [label="" shape=circle width=0.25]
+g21n2 [label="" shape=circle width=0.25]
+g21n7 [label="" shape=circle width=0.25]
+g21n3 [label="" shape=circle width=0.25]
+g21n6 [label="" shape=circle width=0.25]
+g21n5 [label="" shape=circle width=0.25]
+g21n4 [label="" shape=circle width=0.25]
+g21n0 [label="" shape=circle width=0.25]
+g21n1 -> g21n1 [label="true"];
+g21n1 -> g21n3 [label=""];
+g21n1 -> g21n4 [label=""];
+g21n2 -> g21n2 [label="is green"];
+g21n2 -> g21n5 [label=""];
+g21n7 -> g21n7 [label="unknown"];
+g21n7 -> g21n2 [label=""];
+g21n3 -> g21n3 [label="eats flies"];
+g21n3 -> g21n5 [label=""];
+g21n6 -> g21n6 [label="current"];
+g21n6 -> g21n2 [label=""];
+g21n5 -> g21n5 [label="fritz"];
+g21n4 -> g21n4 [label="croaks"];
+g21n4 -> g21n5 [label=""];
+g21n0 -> g21n0 [label="main goal"];
+g21n0 -> g21n2 [label=""];
 }

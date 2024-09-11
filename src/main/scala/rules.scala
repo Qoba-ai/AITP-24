@@ -656,24 +656,53 @@ object bugExamples:
     g
   }
 
-
 import scala.sys.process.*
 def plot(title: String)(body: (String => Unit) ?=> Unit): Process =
+  val safer_title = title.replace(' ', '_')
   // only works when forking process
-  new java.io.PrintWriter(s"plots/$title.dot") {
+  new java.io.PrintWriter(s"plots/$safer_title.dot") {
     write("digraph G {\n")
     write(s"label = \"$title\"\n")
     body(using x => write(x + "\n"))
     write("}\n")
     close()
   }
-  Process(s"dot -Tpng plots/$title.dot -o plots/$title.png").run()
+  Process(s"dot -Tpng plots/$safer_title.dot -o plots/$safer_title.png").run()
 
 
 @main def m =
   // Yeey!
   // BuchiReduction.removeSubsumed(BuchiReduction(BuchiReduction.example_graph)).plot()
 
+//  BackwardChaining.isFrog.plot()
+//  plot("mark facts") { BackwardChaining.markFacts.plot() }
+//  plot("backtrackAnd") { BackwardChaining.backtrackAnd.plot() }
+//  plot("original") {
+//    BackwardChaining.example_graph.plot
+//  }
+
+  import be.adamv.llgraph.graphs.DNIELMG.DSLUnsound.{*, given}
+  val g = {
+    val g = DNIELMG[String]()
+    given g.type = g
+
+    val List(goal, fact, green, eats_flies, croaks) = g.newNodes(5)
+
+    goal ("goal")-> goal
+    fact ("goal")-> fact
+    goal ("green")-> green
+    eats_flies ("eats flies")-> eats_flies
+    croaks ("croaks")-> croaks
+
+    goal ("is")-> green
+    fact ("holds")-> eats_flies
+    fact ("holds")-> croaks
+
+    g
+  }
+  plot("croaks pretty") { g.plot }
+  g.labelMap(_.mkString("\"", "", "\"")).showDSL
+  plot("croaks pretty transformed") { g.labelMap(_.reverse).plot }
   //  BackwardChaining.isFrog.plot()
   //  plot("mark facts") { BackwardChaining.markFacts.plot() }
   //  plot("backtrackAnd") { BackwardChaining.backtrackAnd.plot }
